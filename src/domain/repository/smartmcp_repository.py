@@ -1,5 +1,7 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class SmartMCPRepository(ABC):
-    pass
+    @abstractmethod
+    async def ping(self) -> bool:
+        """Returns True if the server is online."""

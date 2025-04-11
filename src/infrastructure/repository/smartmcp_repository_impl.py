@@ -2,4 +2,5 @@ from src.domain.repository.smartmcp_repository import SmartMCPRepository
 
 
 class SmartMCPRepositoryImpl(SmartMCPRepository):
-    pass
+    async def ping(self) -> bool:
+        return False
