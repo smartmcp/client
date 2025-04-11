@@ -4,7 +4,7 @@ from aiogram.types import Message
 from dishka import FromDishka
 
 from src.application.usecase.is_service_active_usecase import IsServiceActiveUsecase
-
+from src.presentation.kb.start_kb import start_kb
 
 router = Router()
 
@@ -13,9 +13,13 @@ router = Router()
 async def start_command(
     message: Message, is_service_active_usecase: FromDishka[IsServiceActiveUsecase]
 ) -> None:
+    is_active = await is_service_active_usecase.execute()
+
     text = (
         "Привет! Я бот для управления сервером SmartMCP.\n\n"
-        f"На данный момент сервис {'активен ☑️' if await is_service_active_usecase.execute() else 'не активен ❌'}"
+        f"На данный момент сервис {'активен ☑️' if is_active else 'не активен ❌'}"
     )
 
-    await message.answer(text=text)
+    kb = start_kb() if is_active else None
+
+    await message.answer(text=text, reply_markup=kb)
